@@ -1,0 +1,162 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.user-name-model-wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  background-color: rgba(34, 38, 42, 0.3);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  display: none;
+}
+
+.user-model {
+  width: 300px;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.user-name-field {
+  margin: 10px 0;
+}
+
+.chat-space-conatiner {
+  width: 100vw;
+  height: 100vh;
+  background-color: #abd5ff2d;
+}
+
+.chat-space {
+  width: 100vw;
+  height: 90vh;
+  overflow-y: scroll;
+  background-color: rgba(137, 43, 226, 0.082);
+}
+
+.chat-space::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-space::-webkit-scrollbar-track {
+}
+
+.chat-space::-webkit-scrollbar-thumb {
+}
+
+.chat-controls {
+  width: 100vw;
+  height: 6vh;
+  display: flex;
+}
+
+.chat-input-field-container {
+  flex: 8;
+  padding: 10px;
+}
+
+.chat-send-button-container {
+  padding: 10px;
+}
+
+.text-area-field {
+  resize: none;
+  border: 1px solid rgb(116, 172, 245);
+}
+
+.message-container {
+  display: flex;
+  margin: 10px;
+}
+
+.remote-message-container {
+  justify-content: flex-start;
+}
+
+.local-message-container {
+  justify-content: flex-end;
+}
+
+.remote-message {
+  align-self: flex-start;
+  height: fit-content;
+  background-color: aliceblue;
+  width: 45vw;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.local-message {
+  height: fit-content;
+  background-color: aliceblue;
+  width: 45vw;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.chat-username {
+  color: red;
+  font-size: 12px;
+}
+
+.chat-time {
+  font-size: 10px;
+}
+
+.offer-bar {
+  width: 60px;
+  height: 300px;
+  background-color: aqua;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  top: 50%;
+  transform: translate(0%, -50%);
+  border-radius: 5px;
+}
+
+.settings-container {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}
+
+.setting-btn {
+  width: 100%;
+  text-align: start;
+  border-radius: 0px;
+}
+
+.system-model-wrapper {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(34, 38, 42, 0.3);
+  z-index: 9;
+  position: absolute;
+  top: 0;
+  display: none;
+}
+
+.system-offer-model {
+  padding: 20px;
+  width: 300px;
+  height: 380px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  background-color: white;
+}
+
+.system-offer-model textarea {
+  resize: none;
+  width: 100%;
+}

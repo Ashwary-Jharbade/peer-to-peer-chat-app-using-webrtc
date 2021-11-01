@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC - Chat Applicaton</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+  </head>
+  <body>
+    <div class="chat-space-conatiner">
+      <div class="chat-space" id="chats">
+        <div class="message-container remote-message-container">
+          <div class="remote-message">
+            <div class="chat-username">Robot</div>
+            <div>Human beings in general or considered collectively.</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-controls">
+        <div class="form-group chat-input-field-container">
+          <textarea
+            placeholder="Write message here..."
+            class="form-control text-area-field"
+            name=""
+            id="text-message"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="chat-send-button-container">
+          <button id="send-message-button" class="btn btn-primary">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-container">
+      <div class="btn-group dropstart">
+        <button
+          type="button"
+          class="btn btn-primary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fa fa-gear"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <div>
+              <button id="get-offer" class="btn setting-btn">Get Offers</button>
+            </div>
+          </li>
+          <li>
+            <div>
+              <button id="set-offer" class="btn setting-btn">Set Offer</button>
+            </div>
+          </li>
+          <li>
+            <div>
+              <button id="close-connection" class="btn setting-btn">
+                Close connection
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="system-model-wrapper" id="system-offer">
+      <div class="system-offer-model">
+        <div>Offer</div>
+        <div>
+          <textarea id="sdp-offer" cols="30" rows="10" readonly></textarea>
+        </div>
+        <br />
+        <div>
+          <button id="copy-local-offer" class="btn btn-primary">Copy</button>
+          <button id="close-offer-model" class="btn btn-danger">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="system-model-wrapper" id="accept-offer">
+      <div class="system-offer-model">
+        <div>Paste Connection Offer</div>
+        <div>
+          <textarea id="connection-offer" cols="30" rows="10"></textarea>
+        </div>
+        <br />
+        <div>
+          <button id="save-connection-offer" class="btn btn-primary">
+            Save
+          </button>
+          <button id="close-connection-offer-model" class="btn btn-danger">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-name-model-wrapper" id="staticBackdrop">
+      <div class="user-model">
+        <div class="form-group">
+          <label for="name-field"> <b>Enter your chat name</b> </label>
+          <input
+            placeholder="Rex, Ben etc..."
+            id="name-field"
+            class="form-control user-name-field"
+            type="text"
+          />
+        </div>
+        <div>
+          <button class="btn btn-primary" id="user-continue">Continue</button>
+        </div>
+      </div>
+    </div>
+    <script src="./assets/js/index.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
