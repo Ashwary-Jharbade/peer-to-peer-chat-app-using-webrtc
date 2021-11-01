@@ -1,4 +1,16 @@
+// Free public STUN servers provided by Google.
+const iceServers = {
+  iceServers: [
+    { urls: "stun:stun.l.google.com:19302" },
+    { urls: "stun:stun1.l.google.com:19302" },
+    { urls: "stun:stun2.l.google.com:19302" },
+    { urls: "stun:stun3.l.google.com:19302" },
+    { urls: "stun:stun4.l.google.com:19302" },
+  ],
+};
+
 // Variables
+let option;
 const userCont = document.getElementById("user-continue");
 const userModelObj = document.getElementById("staticBackdrop");
 const sendMessageBtn = document.getElementById("send-message-button");
@@ -17,28 +29,58 @@ const closeConnectionOfferModel = document.getElementById(
 let userName = "Robot";
 
 // WebRTC varibales
-
-const localConnection = new RTCPeerConnection();
-const dataChannel = localConnection.createDataChannel("channel");
+let localConnection = new RTCPeerConnection(iceServers);
 let offerArray = [];
-let remoteAnswer;
-localConnection
-  .createOffer()
-  .then((o) => localConnection.setLocalDescription(o))
-  .then(() => console.log("Set Successfully"));
+let dataChannel;
 
-localConnection.onicecandidate = (e) => {
-  offerArray.push(JSON.stringify(localConnection.localDescription));
-};
+function chatConnection() {
+  dataChannel = localConnection.createDataChannel("channel");
+  localConnection
+    .createOffer()
+    .then((o) => localConnection.setLocalDescription(o))
+    .then(() => console.log("Set Successfully"));
 
-dataChannel.onopen = (e) => {
-  console.log("conection opened");
-};
+  localConnection.onicecandidate = (e) => {
+    offerArray.push(JSON.stringify(localConnection.localDescription));
+  };
 
-dataChannel.onmessage = (e) => {
-  const remoteMessage = deSerializeMessage(e.data);
-  updateRemoteMessage(remoteMessage);
-};
+  dataChannel.onopen = (e) => {
+    console.log("conection opened");
+  };
+
+  dataChannel.onmessage = (e) => {
+    const remoteMessage = deSerializeMessage(e.data);
+    updateRemoteMessage(remoteMessage);
+  };
+}
+
+function createRemoteDescription(answer) {
+  const ans = JSON.parse(answer);
+  if (option) {
+    localConnection.setRemoteDescription(ans);
+  } else {
+    localConnection.onicecandidate = (e) => {
+      offerArray.push(JSON.stringify(localConnection.localDescription));
+    };
+    localConnection.ondatachannel = (e) => {
+      localConnection.dataChannel = e.channel;
+      localConnection.dataChannel.onmessage = (e) => {
+        const remoteMessage = deSerializeMessage(e.data);
+        updateRemoteMessage(remoteMessage);
+      };
+      localConnection.dataChannel.onopen = (e) => {
+        console.log("Connection opened");
+      };
+    };
+    localConnection
+      .setRemoteDescription(ans)
+      .then((a) => console.log("Offer set"));
+    localConnection
+      .createAnswer()
+      .then((a) => localConnection.setLocalDescription(a))
+      .then((a) => console.log("Answer created"));
+  }
+}
 
 function elementWithValue(ele, cls, id, value) {
   const obj = element(ele, cls, id);
@@ -101,13 +143,13 @@ function updateLocalMessage(message) {
   messageContainer.scrollIntoView();
 }
 
-function createRemoteDescription(ans) {
-  localConnection.setRemoteDescription(ans);
-}
-
 function sendMessage(message) {
   const sendSerialize = serializeMessage(message);
-  dataChannel.send(sendSerialize);
+  if (option) {
+    dataChannel.send(sendSerialize);
+  } else {
+    localConnection.dataChannel.send(sendSerialize);
+  }
 }
 
 function serializeMessage(message) {
@@ -121,11 +163,22 @@ function deSerializeMessage(message) {
 function copyFunction(id) {
   var copyText = document.getElementById(id);
   copyText.select();
-  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  copyText.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(copyText.value);
 }
 
 // Event listeners
+
+closeConnection.addEventListener("click", () => {
+  if (option) {
+    dataChannel = null;
+    localConnection = null;
+  } else {
+    localConnection.dataChannel = null;
+    localConnection = null;
+  }
+  offerArray = [];
+});
 
 closeConnectionOfferModel.addEventListener("click", () => {
   acceptOffer.style.display = "none";
@@ -136,6 +189,8 @@ saveConnectionOffer.addEventListener("click", () => {
   if (value) {
     acceptOffer.style.display = "none";
     createRemoteDescription(value);
+  } else {
+    alert("Enter valid value");
   }
 });
 
@@ -160,8 +215,8 @@ userCont.addEventListener("click", () => {
   const username = document.getElementById("name-field");
   userName = username.value;
   if (userName) {
-    if (confirm(`Others will recognise by name ${userName}`))
-      userModelObj.style.display = "none";
+    // if (confirm(`Others will recognise by name ${userName}`))
+    userModelObj.style.display = "none";
   } else {
     alert("Enter a valid name!");
   }
@@ -174,11 +229,15 @@ sendMessageBtn.addEventListener("click", () => {
       name: userName,
       message: textValue,
     };
-    // sendMessage(message);
+    sendMessage(message);
     updateLocalMessage(message);
   }
 });
 
-document.onload = () => {
-  // userModelObj.style.display = "block";
+window.onload = () => {
+  option = confirm("Would you be sending connection request ?");
+  userModelObj.style.display = "block";
+  if (option) {
+    chatConnection();
+  }
 };
