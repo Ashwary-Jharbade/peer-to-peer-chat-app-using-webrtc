@@ -34,12 +34,20 @@ const closeConnectionOfferModel = document.getElementById(
 let userName = "Robot";
 
 // WebRTC varibales
-let localConnection = new RTCPeerConnection(iceServers);
+let localConnection = new RTCPeerConnection(iceServers, {
+  optional: [
+    {
+      RtpDataChannels: true,
+    },
+  ],
+});
 let offerArray = [];
 let dataChannel;
 
 function chatConnection() {
-  dataChannel = localConnection.createDataChannel("channel");
+  dataChannel = localConnection.createDataChannel("channel", {
+    reliable: false,
+  });
   localConnection
     .createOffer()
     .then((o) => localConnection.setLocalDescription(o))
@@ -236,7 +244,6 @@ sendMessageBtn.addEventListener("click", () => {
     };
     sendMessage(message);
     updateLocalMessage(message);
-    document.getElementById("text-message").value = "";
   }
 });
 
